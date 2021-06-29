@@ -1,1 +1,1 @@
-# doc-page-checker
+# Doc Page Checker
