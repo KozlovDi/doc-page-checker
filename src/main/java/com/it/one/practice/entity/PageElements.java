@@ -19,6 +19,6 @@ public class PageElements {
         return markers.stream()
                 .filter(element -> element.getName().equals(name))
                 .findFirst().orElseThrow(() ->
-                new ElementNotFoundException("User doesn't exists"));
+                new ElementNotFoundException("Element doesn't exists"));
     }
 }
