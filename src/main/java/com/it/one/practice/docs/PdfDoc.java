@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class PdfDoc implements Doc{
 
-    PDDocument document;
+    private PDDocument document;
 
     public PdfDoc(PDDocument pdfDocument){
         this.document = pdfDocument;
