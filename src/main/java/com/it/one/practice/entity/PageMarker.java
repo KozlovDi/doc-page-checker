@@ -8,6 +8,7 @@ public class PageMarker {
     private final int width;
     private final int height;
 
+
     public PageMarker(String name, boolean ignore, int x, int y, int width, int height) {
         this.name = name;
         this.ignore = ignore;
@@ -39,5 +40,17 @@ public class PageMarker {
 
     public int getHeight() {
         return height;
+    }
+
+    @Override
+    public String toString() {
+        return "PageMarker{" +
+                "name='" + name + '\'' +
+                ", ignore=" + ignore +
+                ", x=" + x +
+                ", y=" + y +
+                ", width=" + width +
+                ", height=" + height +
+                '}';
     }
 }
