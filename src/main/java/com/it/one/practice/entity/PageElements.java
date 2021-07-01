@@ -7,6 +7,8 @@ import java.util.List;
 public class PageElements {
     private List<PageMarker> markers;
 
+    public PageElements (){}
+
     public PageElements(List<PageMarker> markers) {
         this.markers = markers;
     }
@@ -15,17 +17,11 @@ public class PageElements {
         return markers;
     }
 
+
     public PageMarker findByName(String name) throws ElementNotFoundException {
         return markers.stream()
                 .filter(element -> element.getName().equals(name))
                 .findFirst().orElseThrow(() ->
                 new ElementNotFoundException("Element doesn't exists"));
-    }
-
-    @Override
-    public String toString() {
-        return "PageElements{" +
-                "markers=" + markers +
-                '}';
     }
 }
