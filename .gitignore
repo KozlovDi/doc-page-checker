@@ -1,8 +1,8 @@
 # Default ignored files
 /shelf/
-./.idea/
-./target
-.doc-page-checker.iml
+.idea
+target
+doc-page-checker.iml
 
 # Datasource local storage ignored files
 /dataSources/

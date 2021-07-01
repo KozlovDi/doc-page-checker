@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="df384d96-8714-476c-8046-4dad17981d65" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/it/one/practice/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/it/one/practice/Main.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +78,7 @@
       <updated>1624988967273</updated>
       <workItem from="1624988971837" duration="1482000" />
       <workItem from="1625062492469" duration="3538000" />
-      <workItem from="1625129053032" duration="6302000" />
+      <workItem from="1625129053032" duration="6533000" />
     </task>
     <servers />
   </component>
