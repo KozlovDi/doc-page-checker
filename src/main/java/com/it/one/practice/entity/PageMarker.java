@@ -8,6 +8,9 @@ public class PageMarker {
     private int width;
     private int height;
 
+    public PageMarker(){
+    }
+
     public PageMarker(String name, boolean ignore, int x, int y, int width, int height) {
         this.name = name;
         this.ignore = ignore;
