@@ -1,6 +1,7 @@
 {
   "pages": [
     {
+<<<<<<< HEAD
       "elements": [
         {
           "name": "jobName1",
@@ -19,6 +20,28 @@
           "height": 83
         }
       ]
+=======
+      "elements": {
+        "markers": [
+          {
+            "name": "jobName1",
+            "ignore": false,
+            "x": 1003,
+            "y": 336,
+            "width": 1383,
+            "height": 76
+          },
+          {
+            "name": "productionName",
+            "ignore": false,
+            "x": 1003,
+            "y": 499,
+            "width": 1385,
+            "height": 83
+          }
+        ]
+      }
+>>>>>>> f84593e106e9a700bafdb466ef41f7e22e72d259
     }
   ]
 }

@@ -24,4 +24,11 @@ public class PageElements {
                 .findFirst().orElseThrow(() ->
                 new ElementNotFoundException("Element doesn't exists"));
     }
+
+    @Override
+    public String toString() {
+        return "PageElements{" +
+                "markers=" + markers +
+                '}';
+    }
 }
