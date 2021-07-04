@@ -1,8 +1,6 @@
 package com.it.one.practice.docs;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
 import java.awt.image.BufferedImage;
@@ -17,13 +15,13 @@ public class PdfDoc implements Doc{
     }
 
     @Override
-    public Integer pageCount() {
+    public int pageCount() {
         return this.document.getNumberOfPages();
     }
 
     @Override
-    public BufferedImage renderPage(Integer pageNumber) throws IOException {
+    public BufferedImage renderPage(int pageNumber) throws IOException {
         PDFRenderer pdfRenderer = new PDFRenderer(this.document);
-        return pdfRenderer.renderImage(pageNumber);
+        return pdfRenderer.renderImageWithDPI(pageNumber, 300);
     }
 }

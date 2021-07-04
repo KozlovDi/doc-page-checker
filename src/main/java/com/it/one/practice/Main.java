@@ -1,23 +1,37 @@
 package com.it.one.practice;
 
+import com.it.one.practice.checker.DocChecker;
 import com.it.one.practice.config.DocConfig;
-<<<<<<< HEAD
+
+import com.it.one.practice.docs.Doc;
 import com.it.one.practice.exceptions.ElementNotFoundException;
+import com.it.one.practice.loaders.PdfLoader;
+import net.sourceforge.tess4j.Tesseract;
+import net.sourceforge.tess4j.TesseractException;
 
 import java.io.File;
 import java.io.IOException;
-=======
 
-import java.io.File;
-import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        System.out.println(DocConfig.load(new File("src/main/resources/doc.json")));
->>>>>>> f84593e106e9a700bafdb466ef41f7e22e72d259
+    public static void main(String[] args) throws IOException, TesseractException, ElementNotFoundException {
 
-public class Main {
-    public static void main(String[] args) throws IOException, ElementNotFoundException {
-        DocConfig.load(new File("src\\main\\resources\\doc.json"));
+        DocConfig config = DocConfig.load(new File("src/main/resources/doc.json"));
+
+        Doc document = new PdfLoader().load(new File("src/main/resources/docExample.pdf"));
+
+        Doc document1 = new PdfLoader().load(new File("C:/Users/Skid/Downloads/list.pdf"));
+
+        DocChecker docChecker = new DocChecker(document1, config);
+
+        //docChecker.openPage(0).compareWithImage(document1.renderPage(0));
+
+        docChecker.openPage(0).checkElements("jobName1", "СПИСОК");
+
+//        Tesseract tesseract = new Tesseract();
+//        tesseract.setDatapath("src/main/resources/tessdata");
+//        tesseract.setLanguage("rus");
+//        System.out.println(tesseract.doOCR(document.renderPage(0)));
+
     }
 }
