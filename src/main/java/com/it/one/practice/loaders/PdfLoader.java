@@ -9,10 +9,6 @@ import java.io.IOException;
 
 public class PdfLoader implements DocLoader {
 
-    public PdfLoader() {
-
-    }
-
     @Override
     public Doc load(File file) {
         PDDocument doc = null;
