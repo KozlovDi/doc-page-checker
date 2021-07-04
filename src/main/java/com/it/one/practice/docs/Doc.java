@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public interface Doc {
-    int pageCount();
-    BufferedImage renderPage(int pageNumber) throws IOException;
+    public int pageCount();
+
+    public BufferedImage renderPage(int pageNumber) throws IOException;
 }

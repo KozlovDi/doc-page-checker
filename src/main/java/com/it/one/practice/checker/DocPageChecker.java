@@ -1,25 +1,16 @@
 package com.it.one.practice.checker;
 
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.MultiFormatReader;
-import com.google.zxing.NotFoundException;
-import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
-import com.google.zxing.common.HybridBinarizer;
-
 import com.it.one.practice.config.DocConfig;
 import com.it.one.practice.docs.Doc;
 import com.it.one.practice.entity.PageElements;
 import com.it.one.practice.entity.PageMarker;
 import com.it.one.practice.exceptions.ElementNotFoundException;
-
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-
 import java.io.IOException;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,17 +30,15 @@ public class DocPageChecker {
         Tesseract tesseract = new Tesseract();
         tesseract.setDatapath("src/main/resources/tessdata");
         tesseract.setLanguage("rus");
-        return tesseract.doOCR(renderedPage,
-                new Rectangle(marker.getX(), marker.getY(), marker.getWidth(), marker.getHeight())).trim();
+        return tesseract.doOCR(renderedPage, new Rectangle(marker.getX(), marker.getY(), marker.getWidth(), marker.getHeight()));
     }
 
-    public boolean checkElements(String markerName, String expectedText) throws ElementNotFoundException, TesseractException {
-        String marker = recognizeMarker(elements.findByName(markerName));
-        return marker.equals(expectedText);
+    public void checkElements(String markerName, String expectedText) throws ElementNotFoundException, TesseractException {
+        String marker = recognizeMarker(elements.findByName(markerName)).trim();
+        System.out.println(marker.equals(expectedText) ? "Marker is correct" : "Marker is wrong");
     }
 
-    public boolean compareWithImage(BufferedImage image) {
-
+    public void compareWithImage(BufferedImage image) {
         List<PageMarker> uncheckableMarkers =  elements.getMarkers().stream()
                                                 .filter(elem -> !elem.isIgnore())
                                                 .collect(Collectors.toList());
@@ -58,33 +47,22 @@ public class DocPageChecker {
             for (int x = 0; x < image.getWidth(); x++) {
                 for (int y = 0; y < image.getHeight(); y++) {
                     for (PageMarker uncheckableMarker : uncheckableMarkers) {
+                        System.out.println("Before: " + y);
                         while ((x >= uncheckableMarker.getX() && x <= uncheckableMarker.getX() + uncheckableMarker.getWidth()) && (y >= uncheckableMarker.getY() && y <= uncheckableMarker.getY() + uncheckableMarker.getHeight())) {
                             y++;
                         }
+                        System.out.println("After: " + y);
                     }
                     if (image.getRGB(x, y) != this.renderedPage.getRGB(x, y)){
-                        //System.out.println("Images are not equal");
-                        return false;
+                        System.out.println("Images are not equal");
+                        return;
                     }
                 }
             }
-            //System.out.println("Images are equal");
-            return true;
+            System.out.println("Images are equal");
         }
         else {
-            //System.out.println("Images have different sizes");
-            return false;
+            System.out.println("Images have different sizes");
         }
-    }
-
-    public boolean checkBarcode(String markerName, String expectedText) throws NotFoundException, ElementNotFoundException {
-        PageMarker qrCodeMarker = elements.findByName(markerName);
-        BufferedImage qrCodeImage = renderedPage
-                .getSubimage(qrCodeMarker.getX(), qrCodeMarker.getY(),
-                        qrCodeMarker.getWidth(), qrCodeMarker.getHeight());
-
-        BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(
-                new BufferedImageLuminanceSource(qrCodeImage)));
-        return new MultiFormatReader().decode(binaryBitmap).getText().equals(expectedText);
     }
 }

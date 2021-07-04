@@ -7,8 +7,6 @@ import java.util.List;
 public class PageElements {
     private List<PageMarker> markers;
 
-    public PageElements (){}
-
     public PageElements(List<PageMarker> markers) {
         this.markers = markers;
     }
@@ -16,7 +14,6 @@ public class PageElements {
     public List<PageMarker> getMarkers() {
         return markers;
     }
-
 
     public PageMarker findByName(String name) throws ElementNotFoundException {
         return markers.stream()
