@@ -30,15 +30,16 @@ public class DocPageChecker {
         Tesseract tesseract = new Tesseract();
         tesseract.setDatapath("src/main/resources/tessdata");
         tesseract.setLanguage("rus");
-        return tesseract.doOCR(renderedPage, new Rectangle(marker.getX(), marker.getY(), marker.getWidth(), marker.getHeight()));
+        return tesseract.doOCR(renderedPage,
+                new Rectangle(marker.getX(), marker.getY(), marker.getWidth(), marker.getHeight())).trim();
     }
 
-    public void checkElements(String markerName, String expectedText) throws ElementNotFoundException, TesseractException {
-        String marker = recognizeMarker(elements.findByName(markerName)).trim();
-        System.out.println(marker.equals(expectedText) ? "Marker is correct" : "Marker is wrong");
+    public boolean checkElements(String markerName, String expectedText) throws ElementNotFoundException, TesseractException {
+        String marker = recognizeMarker(elements.findByName(markerName));
+        return marker.equals(expectedText);
     }
 
-    public void compareWithImage(BufferedImage image) {
+    public boolean compareWithImage(BufferedImage image) {
         List<PageMarker> uncheckableMarkers =  elements.getMarkers().stream()
                                                 .filter(elem -> !elem.isIgnore())
                                                 .collect(Collectors.toList());
@@ -47,22 +48,22 @@ public class DocPageChecker {
             for (int x = 0; x < image.getWidth(); x++) {
                 for (int y = 0; y < image.getHeight(); y++) {
                     for (PageMarker uncheckableMarker : uncheckableMarkers) {
-                        System.out.println("Before: " + y);
                         while ((x >= uncheckableMarker.getX() && x <= uncheckableMarker.getX() + uncheckableMarker.getWidth()) && (y >= uncheckableMarker.getY() && y <= uncheckableMarker.getY() + uncheckableMarker.getHeight())) {
                             y++;
                         }
-                        System.out.println("After: " + y);
                     }
                     if (image.getRGB(x, y) != this.renderedPage.getRGB(x, y)){
-                        System.out.println("Images are not equal");
-                        return;
+                        //System.out.println("Images are not equal");
+                        return false;
                     }
                 }
             }
-            System.out.println("Images are equal");
+            //System.out.println("Images are equal");
+            return true;
         }
         else {
-            System.out.println("Images have different sizes");
+            //System.out.println("Images have different sizes");
+            return false;
         }
     }
 }
