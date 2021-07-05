@@ -1,0 +1,26 @@
+{
+  "pages": [
+    {
+      "elements": {
+        "markers": [
+          {
+            "name": "jobName1",
+            "ignore": true,
+            "x": 0,
+            "y": 0,
+            "width": 2478,
+            "height": 3500
+          },
+          {
+            "name": "productionName",
+            "ignore": true,
+            "x": 1003,
+            "y": 499,
+            "width": 1385,
+            "height": 83
+          }
+        ]
+      }
+    }
+  ]
+}
