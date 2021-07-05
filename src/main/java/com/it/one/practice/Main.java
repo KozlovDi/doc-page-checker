@@ -20,9 +20,7 @@ public class Main {
 
         Doc document = new PdfLoader().load(new File("src/main/resources/docExample.pdf"));
 
-        Doc document1 = new PdfLoader().load(new File("C:/Users/Skid/Downloads/list.pdf"));
-
-        DocChecker docChecker = new DocChecker(document1, config);
+        DocChecker docChecker = new DocChecker(document, config);
 
         //docChecker.openPage(0).compareWithImage(document1.renderPage(0));
 
