@@ -4,12 +4,12 @@ import static org.junit.Assert.*;
 
 import com.it.one.practice.config.DocConfig;
 import com.it.one.practice.docs.Doc;
-import com.it.one.practice.docs.PdfDoc;
 import com.it.one.practice.entity.PageMarker;
 import com.it.one.practice.exceptions.ElementNotFoundException;
-import com.it.one.practice.loaders.DocLoader;
 import com.it.one.practice.loaders.PdfLoader;
+
 import net.sourceforge.tess4j.TesseractException;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,7 +34,7 @@ public class DocCheckerTests {
     @Test
     public void recognizeMarkerCorrectTest() throws ClassNotFoundException, IOException, NoSuchMethodException,
             ElementNotFoundException, InvocationTargetException, IllegalAccessException {
-        String expected = "СПИСО";
+        String expected = "СПИСОК";
         Class<?> clazz = Class.forName("com.it.one.practice.checker.DocPageChecker");
         Method m = clazz.getDeclaredMethod("recognizeMarker", PageMarker.class);
         m.setAccessible(true);
