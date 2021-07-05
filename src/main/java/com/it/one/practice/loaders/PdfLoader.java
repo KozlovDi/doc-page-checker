@@ -10,13 +10,8 @@ import java.io.IOException;
 public class PdfLoader implements DocLoader {
 
     @Override
-    public Doc load(File file) {
-        PDDocument doc = null;
-        try {
-            doc = PDDocument.load(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new PdfDoc(doc);
+    public Doc load(File file) throws IOException {
+        return new PdfDoc(PDDocument.load(file));
     }
+
 }
