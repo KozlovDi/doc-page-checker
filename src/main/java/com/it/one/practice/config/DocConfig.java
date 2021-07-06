@@ -23,6 +23,7 @@ public class DocConfig {
     public static DocConfig load(File file) throws IOException {
         List<String> data = Files.readAllLines(Paths.get(file.getAbsolutePath()));
         StringBuilder json = new StringBuilder();
+
         data.forEach(json::append);
         Gson gson = new Gson();
         return gson.fromJson(json.toString(), DocConfig.class);
