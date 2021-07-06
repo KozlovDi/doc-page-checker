@@ -14,7 +14,7 @@ import java.util.List;
 
 public class DocConfig {
 
-    private List<PageConfig> pages;
+    private final List<PageConfig> pages;
 
     public DocConfig(List<PageConfig> pages){
         this.pages = pages;

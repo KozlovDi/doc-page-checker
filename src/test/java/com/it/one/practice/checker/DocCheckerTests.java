@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import com.it.one.practice.config.DocConfig;
 import com.it.one.practice.docs.Doc;
-import com.it.one.practice.entity.PageMarker;
 import com.it.one.practice.exceptions.ElementNotFoundException;
 import com.it.one.practice.loaders.PdfLoader;
 
@@ -15,8 +14,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+
 
 public class DocCheckerTests {
 
@@ -29,30 +27,6 @@ public class DocCheckerTests {
         config = DocConfig.load(new File("src/test/resources/doc.json"));
         doc = new PdfLoader().load(new File("src/test/resources/list.pdf"));
         checker = new DocChecker(doc, config);
-    }
-
-    @Test
-    public void recognizeMarkerCorrectTest() throws ClassNotFoundException, IOException, NoSuchMethodException,
-            ElementNotFoundException, InvocationTargetException, IllegalAccessException {
-        String expected = "СПИСОК";
-        Class<?> clazz = Class.forName("com.it.one.practice.checker.DocPageChecker");
-        Method m = clazz.getDeclaredMethod("recognizeMarker", PageMarker.class);
-        m.setAccessible(true);
-        String actual = (String) m.invoke(checker.openPage(0), config.getPageElements(0)
-                .findByName("jobName1"));
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void recognizeMarkerWrongTest() throws ClassNotFoundException, IOException, NoSuchMethodException,
-            ElementNotFoundException, InvocationTargetException, IllegalAccessException {
-        String expected = "СПИСО";
-        Class<?> clazz = Class.forName("com.it.one.practice.checker.DocPageChecker");
-        Method m = clazz.getDeclaredMethod("recognizeMarker", PageMarker.class);
-        m.setAccessible(true);
-        String actual = (String) m.invoke(checker.openPage(0), config.getPageElements(0)
-                .findByName("jobName1"));
-        assertNotEquals(expected, actual);
     }
 
     @Test
