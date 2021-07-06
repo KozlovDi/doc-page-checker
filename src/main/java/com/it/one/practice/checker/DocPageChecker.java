@@ -1,16 +1,25 @@
 package com.it.one.practice.checker;
 
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
+
 import com.it.one.practice.config.DocConfig;
 import com.it.one.practice.docs.Doc;
 import com.it.one.practice.entity.PageElements;
 import com.it.one.practice.entity.PageMarker;
 import com.it.one.practice.exceptions.ElementNotFoundException;
+
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
 import java.io.IOException;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +49,7 @@ public class DocPageChecker {
     }
 
     public boolean compareWithImage(BufferedImage image) {
+
         List<PageMarker> uncheckableMarkers =  elements.getMarkers().stream()
                                                 .filter(elem -> !elem.isIgnore())
                                                 .collect(Collectors.toList());
@@ -65,5 +75,16 @@ public class DocPageChecker {
             //System.out.println("Images have different sizes");
             return false;
         }
+    }
+
+    public boolean checkBarcode(String markerName, String expectedText) throws NotFoundException, ElementNotFoundException {
+        PageMarker qrCodeMarker = elements.findByName(markerName);
+        BufferedImage qrCodeImage = renderedPage
+                .getSubimage(qrCodeMarker.getX(), qrCodeMarker.getY(),
+                        qrCodeMarker.getWidth(), qrCodeMarker.getHeight());
+
+        BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(
+                new BufferedImageLuminanceSource(qrCodeImage)));
+        return new MultiFormatReader().decode(binaryBitmap).getText().equals(expectedText);
     }
 }

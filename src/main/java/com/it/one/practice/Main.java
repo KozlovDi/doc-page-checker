@@ -22,9 +22,9 @@ public class Main {
 
         DocChecker docChecker = new DocChecker(document, config);
 
-        //docChecker.openPage(0).compareWithImage(document1.renderPage(0));
+        docChecker.openPage(0).compareWithImage(document.renderPage(0));
 
-        docChecker.openPage(0).checkElements("jobName1", "СПИСОК");
+        //docChecker.openPage(0).checkElements("jobName1", "СПИСОК");
 
 //        Tesseract tesseract = new Tesseract();
 //        tesseract.setDatapath("src/main/resources/tessdata");
