@@ -5,11 +5,11 @@
         "markers": [
           {
             "name": "jobName1",
-            "ignore": true,
+            "ignore": false,
             "x": 0,
             "y": 0,
-            "width": 2478,
-            "height": 3500
+            "width": 1000,
+            "height": 1000
           },
           {
             "name": "productionName",
