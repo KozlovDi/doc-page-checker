@@ -5,7 +5,7 @@ import com.it.one.practice.exceptions.ElementNotFoundException;
 import java.util.List;
 
 public class PageElements {
-    private List<PageMarker> markers;
+    private final List<PageMarker> markers;
 
     public PageElements(List<PageMarker> markers) {
         this.markers = markers;

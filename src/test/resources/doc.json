@@ -5,7 +5,7 @@
         "markers": [
           {
             "name": "jobName1",
-            "ignore": true,
+            "ignore": false,
             "x": 0,
             "y": 0,
             "width": 2478,

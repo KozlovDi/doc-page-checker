@@ -5,6 +5,5 @@ import java.io.IOException;
 
 public interface Doc {
     int pageCount();
-
     BufferedImage renderPage(int pageNumber) throws IOException;
 }
