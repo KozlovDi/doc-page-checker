@@ -1,5 +1,10 @@
 package com.it.one.practice.checker;
 
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
 import com.it.one.practice.config.DocConfig;
 import com.it.one.practice.docs.Doc;
 import com.it.one.practice.entity.PageElements;
@@ -22,12 +27,13 @@ public class DocPageChecker {
     private final PageElements elements;
     private final BufferedImage renderedPage;
     private BufferedImage comparedImage;
+    private final int dpi;
 
-    public DocPageChecker(Doc doc, DocConfig config, int pageIndex) throws IOException {
+    DocPageChecker(Doc doc, DocConfig config, int pageIndex) throws IOException {
         this.pageIndex = pageIndex;
         this.elements = config.getPageElements(pageIndex);
+        this.dpi = config.getDpi();
         this.renderedPage = doc.renderPage(pageIndex);
-        //this.comparedImage = this.renderedPage;
     }
 
     public BufferedImage getComparedImage() {
@@ -38,8 +44,10 @@ public class DocPageChecker {
         Tesseract tesseract = new Tesseract();
         tesseract.setDatapath("src/main/resources/tessdata");
         tesseract.setLanguage("rus");
-        return tesseract.doOCR(renderedPage,
-                new Rectangle(marker.getX(), marker.getY(), marker.getWidth(), marker.getHeight())).trim();
+        double ratio = 300.0 / dpi;
+        Rectangle coords = new Rectangle((int)(marker.getX() * ratio), (int)(marker.getY() * ratio), (int)(marker.getWidth() * ratio), (int)(marker.getHeight() * ratio));
+        System.out.println(tesseract.doOCR(renderedPage, coords).trim());
+        return tesseract.doOCR(renderedPage, coords).trim();
     }
 
     public boolean checkElements(String markerName, String expectedText) throws ElementNotFoundException, TesseractException {
@@ -47,12 +55,12 @@ public class DocPageChecker {
         return marker.equals(expectedText);
     }
 
-    public boolean compareWithImage(BufferedImage image) {
+    boolean compareWithImage(BufferedImage image) {
         comparedImage = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
         RescaleOp brighterOp = new RescaleOp(0.5f, 0, null);
         comparedImage = brighterOp.filter(image, null);
         List<PageMarker> uncheckableMarkers =  elements.getMarkers().stream()
-                                                .filter(elem -> elem.isIgnore())
+                                                .filter(PageMarker::isIgnore)
                                                 .collect(Collectors.toList());
         List<PageMarker> checkableMarkers =  elements.getMarkers().stream()
                                                 .filter(elem -> !elem.isIgnore())
@@ -103,5 +111,16 @@ public class DocPageChecker {
             //System.out.println("Images have different sizes");
             return false;
         }
+    }
+
+    public boolean checkBarcode(String markerName, String expectedText) throws NotFoundException, ElementNotFoundException {
+        PageMarker qrCodeMarker = elements.findByName(markerName);
+        BufferedImage qrCodeImage = renderedPage
+                .getSubimage(qrCodeMarker.getX(), qrCodeMarker.getY(),
+                        qrCodeMarker.getWidth(), qrCodeMarker.getHeight());
+
+        BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(
+                new BufferedImageLuminanceSource(qrCodeImage)));
+        return new MultiFormatReader().decode(binaryBitmap).getText().equals(expectedText);
     }
 }

@@ -15,15 +15,16 @@ import java.util.List;
 public class DocConfig {
 
     private final List<PageConfig> pages;
+    private final int dpi;
 
-    public DocConfig(List<PageConfig> pages){
+    public DocConfig(List<PageConfig> pages, int dpi){
         this.pages = pages;
+        this.dpi = dpi;
     }
 
     public static DocConfig load(File file) throws IOException {
         List<String> data = Files.readAllLines(Paths.get(file.getAbsolutePath()));
         StringBuilder json = new StringBuilder();
-
         data.forEach(json::append);
         Gson gson = new Gson();
         return gson.fromJson(json.toString(), DocConfig.class);
@@ -33,11 +34,15 @@ public class DocConfig {
         return pages.get(pageIndex).getElements();
     }
 
+    public int getDpi() {
+        return dpi;
+    }
+
     @Override
     public String toString() {
         return "DocConfig{" +
                 "pages=" + pages +
+                ", dpi=" + dpi +
                 '}';
     }
-
 }
