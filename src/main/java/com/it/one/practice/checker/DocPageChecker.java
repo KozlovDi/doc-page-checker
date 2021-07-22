@@ -13,9 +13,11 @@ import com.it.one.practice.exceptions.ElementNotFoundException;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -55,16 +57,16 @@ public class DocPageChecker {
         return marker.equals(expectedText);
     }
 
-    boolean compareWithImage(BufferedImage image) {
+    public boolean compareWithImage(BufferedImage image) throws IOException {
         comparedImage = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
         RescaleOp brighterOp = new RescaleOp(0.5f, 0, null);
         comparedImage = brighterOp.filter(image, null);
         List<PageMarker> uncheckableMarkers =  elements.getMarkers().stream()
-                                                .filter(PageMarker::isIgnore)
-                                                .collect(Collectors.toList());
+                .filter(PageMarker::isIgnore)
+                .collect(Collectors.toList());
         List<PageMarker> checkableMarkers =  elements.getMarkers().stream()
-                                                .filter(elem -> !elem.isIgnore())
-                                                .collect(Collectors.toList());
+                .filter(elem -> !elem.isIgnore())
+                .collect(Collectors.toList());
 
         List<PageMarker> wrongMarkers = new ArrayList<>();
 
@@ -84,8 +86,6 @@ public class DocPageChecker {
                                 }
                             }
                         }
-                        //System.out.println("Images are not equal");
-                        //return false;
                     }
                 }
             }
@@ -98,6 +98,8 @@ public class DocPageChecker {
                 }
             }
 
+            ImageIO.write(comparedImage, "png", new File("src/main/resources/compared.png"));
+
             if(wrongMarkers.size() == 0){
                 System.out.println("Images are equal");
                 return true;
@@ -108,7 +110,7 @@ public class DocPageChecker {
             }
         }
         else {
-            //System.out.println("Images have different sizes");
+            System.out.println("Images have different sizes");
             return false;
         }
     }
