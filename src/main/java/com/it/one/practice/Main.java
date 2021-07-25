@@ -16,7 +16,7 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException, TesseractException, ElementNotFoundException {
 
-        DocConfig config = DocConfig.load(new File("src/main/resources/doc.json"));
+        DocConfig config = DocConfig.load(new File("src/main/resources/markers.json"));
 
         Doc document = new PdfLoader().load(new File("src/main/resources/docExample.pdf"));
 
@@ -25,14 +25,9 @@ public class Main {
         DocChecker docChecker = new DocChecker(document, config);
 
         docChecker.openPage(0).compareWithImage(document2.renderPage(0));
+        docChecker.openPage(1).compareWithImage(document2.renderPage(1));
 
-
-//        System.out.println(docChecker.openPage(0).checkElements("1", "Место для флтографии"));
-
-//        Tesseract tesseract = new Tesseract();
-//        tesseract.setDatapath("src/main/resources/tessdata");
-//        tesseract.setLanguage("rus");
-//        System.out.println(tesseract.doOCR(document.renderPage(0)));
+        //System.out.println(docChecker.openPage(1).checkElements("check", "Место для флтографии"));
 
     }
 }

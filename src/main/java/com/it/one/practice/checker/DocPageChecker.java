@@ -38,10 +38,6 @@ public class DocPageChecker {
         this.renderedPage = doc.renderPage(pageIndex);
     }
 
-    public BufferedImage getComparedImage() {
-        return comparedImage;
-    }
-
     private String recognizeMarker(PageMarker marker) throws TesseractException {
         Tesseract tesseract = new Tesseract();
         tesseract.setDatapath("src/main/resources/tessdata");
@@ -64,11 +60,8 @@ public class DocPageChecker {
         List<PageMarker> uncheckableMarkers =  elements.getMarkers().stream()
                 .filter(PageMarker::isIgnore)
                 .collect(Collectors.toList());
-        List<PageMarker> checkableMarkers =  elements.getMarkers().stream()
-                .filter(elem -> !elem.isIgnore())
-                .collect(Collectors.toList());
 
-        List<PageMarker> wrongMarkers = new ArrayList<>();
+        boolean isEqual = true;
 
         if (image.getWidth() == this.renderedPage.getWidth() && image.getHeight() == this.renderedPage.getHeight()) {
             for (int x = 0; x < image.getWidth(); x++) {
@@ -79,28 +72,27 @@ public class DocPageChecker {
                         }
                     }
                     if(image.getRGB(x, y) != this.renderedPage.getRGB(x, y)){
-                        for (PageMarker checkableMarker : checkableMarkers) {
-                            if((x >= checkableMarker.getX() && x <= checkableMarker.getX() + checkableMarker.getWidth()) && (y >= checkableMarker.getY() && y <= checkableMarker.getY() + checkableMarker.getHeight())){
-                                if(!wrongMarkers.contains(checkableMarker)){
-                                    wrongMarkers.add(checkableMarker);
-                                }
+                        for(int i = x - 10; i <= x + 10; i++){
+                            for(int j = y - 10; j <= y + 10; j++){
+                                if(i < 0)
+                                    i = 0;
+                                else if(i > image.getWidth())
+                                    i = image.getWidth();
+                                if(j < 0)
+                                    j = 0;
+                                else if(j > image.getHeight())
+                                    j = image.getHeight();
+                                comparedImage.setRGB(i, j, image.getRGB(i, j));
+                                isEqual = false;
                             }
                         }
                     }
                 }
             }
 
-            for(PageMarker wrongMarker : wrongMarkers){
-                for (int x = wrongMarker.getX(); x < wrongMarker.getX() + wrongMarker.getWidth(); x++) {
-                    for (int y = wrongMarker.getY(); y < wrongMarker.getY() + wrongMarker.getHeight(); y++) {
-                        comparedImage.setRGB(x, y, image.getRGB(x, y));
-                    }
-                }
-            }
+            ImageIO.write(comparedImage, "png", new File("src/main/resources/comparedImages/page " + pageIndex + ".png"));
 
-            ImageIO.write(comparedImage, "png", new File("src/main/resources/compared.png"));
-
-            if(wrongMarkers.size() == 0){
+            if(isEqual){
                 System.out.println("Images are equal");
                 return true;
             }
