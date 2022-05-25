@@ -12,12 +12,16 @@ import java.nio.file.Files;
 
 import java.util.List;
 
+/**
+ * Класс отвечающий за конфигурацию всего документа.
+ */
+
 public class DocConfig {
 
     private final List<PageConfig> pages;
     private final int dpi;
 
-    public DocConfig(List<PageConfig> pages, int dpi){
+    public DocConfig(List<PageConfig> pages, int dpi) {
         this.pages = pages;
         this.dpi = dpi;
     }
@@ -30,7 +34,7 @@ public class DocConfig {
         return gson.fromJson(json.toString(), DocConfig.class);
     }
 
-    public PageElements getPageElements(int pageIndex){
+    public PageElements getPageElements(int pageIndex) {
         return pages.get(pageIndex).getElements();
     }
 

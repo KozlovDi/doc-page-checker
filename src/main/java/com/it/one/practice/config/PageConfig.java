@@ -2,6 +2,10 @@ package com.it.one.practice.config;
 
 import com.it.one.practice.entity.PageElements;
 
+/**
+ * Класс отвечающий за конфигурацию каждой страницы.
+ */
+
 public class PageConfig {
 
     private final PageElements elements;

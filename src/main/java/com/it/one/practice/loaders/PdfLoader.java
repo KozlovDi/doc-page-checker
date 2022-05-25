@@ -7,6 +7,10 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Класс отвечающий за загрузку PDF документа.
+ */
+
 public class PdfLoader implements DocLoader {
 
     @Override

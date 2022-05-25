@@ -20,14 +20,12 @@ public class Main {
 
         Doc document = new PdfLoader().load(new File("src/main/resources/docExample.pdf"));
 
-        Doc document2 = new PdfLoader().load(new File("src/main/resources/output.pdf"));
-
         DocChecker docChecker = new DocChecker(document, config);
 
-        docChecker.openPage(0).compareWithImage(document2.renderPage(0));
-        docChecker.openPage(1).compareWithImage(document2.renderPage(1));
+        //docChecker.openPage(0).compareWithImage(document2.renderPage(0));
+        //docChecker.openPage(1).compareWithImage(document2.renderPage(1));
 
-        //System.out.println(docChecker.openPage(1).checkElements("check", "Место для флтографии"));
+        System.out.println(docChecker.openPage(0).checkElements("123", "Место для флтографии"));
 
     }
 }

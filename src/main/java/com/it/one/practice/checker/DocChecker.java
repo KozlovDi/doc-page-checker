@@ -5,6 +5,10 @@ import com.it.one.practice.docs.Doc;
 
 import java.io.IOException;
 
+/**
+ * Класс отвечающий за проверку всего документа.
+ */
+
 public class DocChecker {
 
     private final Doc document;

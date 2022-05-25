@@ -23,6 +23,10 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Класс отвечающий за проверку страницы документа/
+ */
+
 public class DocPageChecker {
 
     private final int pageIndex;
@@ -38,6 +42,13 @@ public class DocPageChecker {
         this.renderedPage = doc.renderPage(pageIndex);
     }
 
+    /**
+     * recognizeMarker определяет текст находящийся внутри маркера.
+     * @param marker
+     * @return String
+     * @throws TesseractException
+     */
+
     private String recognizeMarker(PageMarker marker) throws TesseractException {
         Tesseract tesseract = new Tesseract();
         tesseract.setDatapath("src/main/resources/tessdata");
@@ -48,10 +59,26 @@ public class DocPageChecker {
         return tesseract.doOCR(renderedPage, coords).trim();
     }
 
+    /**
+     * checkElements проверяет совпало ли содержимое маркера с ожидаемым результатом.
+     * @param markerName
+     * @param expectedText
+     * @return  boolean
+     * @throws ElementNotFoundException
+     * @throws TesseractException
+     */
+
     public boolean checkElements(String markerName, String expectedText) throws ElementNotFoundException, TesseractException {
         String marker = recognizeMarker(elements.findByName(markerName));
         return marker.equals(expectedText);
     }
+
+    /**
+     * compareWithImage сравнивает 2 картинки и отображает различия, если они есть.
+     * @param image
+     * @return boolean
+     * @throws IOException
+     */
 
     public boolean compareWithImage(BufferedImage image) throws IOException {
         comparedImage = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
@@ -106,6 +133,15 @@ public class DocPageChecker {
             return false;
         }
     }
+
+    /**
+     * checkBarcode ставнивает значение считываемого по маркеру Barcode с ожидаемым результатом.
+     * @param markerName
+     * @param expectedText
+     * @return boolean
+     * @throws NotFoundException
+     * @throws ElementNotFoundException
+     */
 
     public boolean checkBarcode(String markerName, String expectedText) throws NotFoundException, ElementNotFoundException {
         PageMarker qrCodeMarker = elements.findByName(markerName);

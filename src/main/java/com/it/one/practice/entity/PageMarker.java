@@ -1,5 +1,9 @@
 package com.it.one.practice.entity;
 
+/**
+ * Класс отвечающий за маркер.
+ */
+
 public class PageMarker {
     private final String name;
     private final boolean ignore;
