@@ -19,11 +19,10 @@ import java.util.List;
 public class DocConfig {
 
     private final List<PageConfig> pages;
-    private final int dpi;
+    private final int dpi = 72;
 
-    public DocConfig(List<PageConfig> pages, int dpi) {
+    public DocConfig(List<PageConfig> pages) {
         this.pages = pages;
-        this.dpi = dpi;
     }
 
     public static DocConfig load(File file) throws IOException {

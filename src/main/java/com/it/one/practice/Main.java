@@ -16,16 +16,21 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException, TesseractException, ElementNotFoundException {
 
+        // Пример получения конфига документа.
         DocConfig config = DocConfig.load(new File("src/main/resources/markers.json"));
 
-        Doc document = new PdfLoader().load(new File("src/main/resources/docExample.pdf"));
+        // Привер считывания PDF документа.
+        Doc document1 = new PdfLoader().load(new File("src/main/resources/docExample.pdf"));
+        Doc document2 = new PdfLoader().load(new File("src/main/resources/output.pdf"));
 
-        DocChecker docChecker = new DocChecker(document, config);
+        // Пример связывания конфига с документов.
+        DocChecker docChecker = new DocChecker(document1, config);
 
-        //docChecker.openPage(0).compareWithImage(document2.renderPage(0));
-        //docChecker.openPage(1).compareWithImage(document2.renderPage(1));
+        // Пример сравнения изображений 2-х страниц.
+        docChecker.openPage(0).compareWithImage(document2.renderPage(0));
 
-        System.out.println(docChecker.openPage(0).checkElements("123", "Место для флтографии"));
+        // Пример проверки документа по маркеру.
+        System.out.println(docChecker.openPage(0).checkElements("1", "место для фотографии"));
 
     }
 }

@@ -33,7 +33,7 @@ public class DocPageChecker {
     private final PageElements elements;
     private final BufferedImage renderedPage;
     private BufferedImage comparedImage;
-    private final int dpi;
+    private int dpi;
 
     DocPageChecker(Doc doc, DocConfig config, int pageIndex) throws IOException {
         this.pageIndex = pageIndex;
@@ -55,8 +55,9 @@ public class DocPageChecker {
         tesseract.setLanguage("rus");
         double ratio = 300.0 / dpi;
         Rectangle coords = new Rectangle((int)(marker.getX() * ratio), (int)(marker.getY() * ratio), (int)(marker.getWidth() * ratio), (int)(marker.getHeight() * ratio));
-        System.out.println(tesseract.doOCR(renderedPage, coords).trim());
-        return tesseract.doOCR(renderedPage, coords).trim();
+        String definedText = tesseract.doOCR(renderedPage, coords).trim().replaceAll("\n", " ");
+        System.out.println(definedText);
+        return definedText;
     }
 
     /**
